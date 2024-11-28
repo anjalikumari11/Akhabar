@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: 0;
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+
+        .card img {
+            object-fit: cover;
+            height: 300px;
+            width: 400px;
+            border-radius: 20px;
+
+        }
+
+        .card h1 {
+            font-size: 20px;
+            margin: 10px;
+        }
+
+        .card {
+            width: 400px;
+            margin: 8px;
+            border: 1px solid black;
+            border-radius: 20px;
+            object-fit: cover;
+            padding-bottom: 10px;
+        }
+
+        #box {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card h6 {
+            font-size: 10px;
+            color: blue;
+            margin: 10px;
+            font-weight: 600;
+        }
+
+        .card a {
+            text-decoration: none;
+            color: rgb(255, 255, 255);
+            /* padding: 20px; */
+            padding-top: 6px;
+            padding-bottom: 6px;
+            padding-left: 10px;
+            padding-right: 10px;
+
+            margin: 10px;
+            background-color: rgb(83, 60, 234);
+            border-radius: 20px;
+        }
+
+        button {
+            padding-left: 15px;
+            padding-right: 15px;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            background-color: rgb(40, 120, 240);
+            outline: none;
+            border: none;
+            color: white;
+            margin-right: 10px;
+            border-radius: 10px;
+        }
+
+        nav {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        nav h2 {
+            font-size: 30px;
+            font-weight: bolder;
+        }
+
+        .bar {
+            color: rgb(40, 120, 240);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div>
+            <h2>Akha<span class="bar">bar</span></h2>
+        </div>
+        <div class="btn">
+            <button
+                onclick="fetchNews('https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=88b1859c46614e3f95c33a7a13171a15')">Technology</button>
+            <button
+                onclick="fetchNews('https://newsapi.org/v2/everything?q=tesla&from=2024-10-28&sortBy=publishedAt&apiKey=88b1859c46614e3f95c33a7a13171a15')">Tesla</button>
+            <button
+                onclick="fetchNews('https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=88b1859c46614e3f95c33a7a13171a15')">Business</button>
+            <button
+                onclick='fetchNews("https://newsapi.org/v2/everything?q=apple&from=2024-11-27&to=2024-11-27&sortBy=popularity&apiKey=88b1859c46614e3f95c33a7a13171a15")'>Apple</button>
+
+        </div>
+    </nav>
+    <div id="box"></div>
+    <div id="load">Loading...</div>
+    <script>
+        const api = 'https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=88b1859c46614e3f95c33a7a13171a15'
+        fetchNews(api);
+
+        function fetchNews(url) {
+            document.querySelector('#box').innerHTML = "";
+            document.getElementById('load').style.display = "block";
+
+            fetch(url)
+                .then((res) => res.json())
+                .then((res) => {
+                    document.getElementById('load').style.display = "none";
+                    for (var i = 0; i < res["totalResults"]; i++) {
+                        if (res['articles'][i]['urlToImage'] != null && res['articles'][i]['urlToImage'] != "") {
+                            var div = document.createElement("div");
+                            div.className = 'card';
+                            var img = document.createElement("img");
+                            var h1 = document.createElement("h1");
+                            var h6 = document.createElement("h6");
+                            var a = document.createElement('a');
+
+                            img.src = res['articles'][i]['urlToImage'];
+                            h1.innerHTML = res['articles'][i]['title'];
+                            h6.innerHTML = res['articles'][i]['author'];
+                            a.href = res['articles'][i]['url'];
+                            a.innerHTML = 'View Post';
+                            a.target = '_Anjali';
+
+                            div.append(img);
+                            div.append(h1);
+                            div.append(h6);
+                            div.append(a);
+                            document.querySelector('#box').append(div);
+                        }
+
+                    }
+                })
+        }
+
+    </script>
+</body>
+
+</html>
